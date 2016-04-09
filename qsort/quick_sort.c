@@ -96,6 +96,7 @@ void test_qsort
             left = lstack[p];
             right = rstack[p];
         }
+        num = ((right - left)/data_size) + 1;
         pivot = (size_t)((char*)left + (num/2) * data_size);
         i = left; j = right;
         for( ; ; ){
