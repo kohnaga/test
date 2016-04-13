@@ -1,8 +1,9 @@
 #include "quick_sort.h"
+#include <assert.h>
 
 #define STACKSIZE (100)
 #define DATA_SIZE (1024)
-#define THRESHOLD (10)
+#define THRESHOLD (1)
 
 static void my_memswap
 (
@@ -77,37 +78,62 @@ void test_qsort
     size_t data_cnt,
     size_t data_size,
     int( * func )( const void * , const void *)
-)
+ )
 {
     size_t i, j, left, right, p;
     size_t lstack[STACKSIZE], rstack[STACKSIZE];
     size_t pivot;
-    size_t num;
+    int num;
     
     left = (size_t)data;
     right = (size_t)((char*)data + (data_cnt - 1) * data_size);
     p = 0;
     
     for( ; ; ){
-        num = ((right - left)/data_size) + 1;
-        if(num < THRESHOLD){
+        num = (int)((right - left)/data_size) + 1;
+        if(num <= THRESHOLD){
             if(p == 0) break;
             p--;
             left = lstack[p];
             right = rstack[p];
         }
+        num = (int)((right - left)/data_size) + 1;
         pivot = (size_t)((char*)left + (num/2) * data_size);
         i = left; j = right;
         for( ; ; ){
-            while (func((const void *)i, (const void * )pivot) < 0) i += data_size;
-            while (func((const void *)j, (const void * )pivot) > 0) j -= data_size;
+            
+            while
+            (
+                i + data_size <= right
+                &&
+                func((const void *)i, (const void * )pivot) < 0
+            ){
+                    i += data_size;
+            }
+            
+            while
+            (
+                j - data_size >= left
+                &&
+                func((const void *)j, (const void * )pivot) > 0
+             ){
+                j -= data_size;
+            }
+            
             if(i >= j) break;
+            
             my_memswap((void *)i, (void *)j, data_size);
+            if(i == pivot){
+                pivot = j;
+            }else if(j == pivot){
+                pivot = i;
+            }
             i += data_size;
             j -= data_size;
         }
+        
         if(i - left > right - j){
-            num = ((i - left)/data_size) + 1;
+            num = (int)((i - left)/data_size) + 1;
             if(num > THRESHOLD){
                 lstack[p] = left;
                 rstack[p] = i - data_size;
@@ -115,7 +141,7 @@ void test_qsort
             }
             left = j + data_size;
         }else{
-            num = ((right - j)/data_size) + 1;
+            num = (int)((right - j)/data_size) + 1;
             if(num > THRESHOLD){
                 lstack[p] = j + data_size;
                 rstack[p] = right;

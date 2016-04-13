@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <assert.h>
 #include "quick_sort.h"
 
-#define NUM (1000)
+#define NUM (1000000)
 
 typedef struct test_struct{
     int end;
@@ -16,7 +17,6 @@ int compare_int(const void * a, const void * b){
     int b_int = *(int*)b;
     
     return a_int - b_int;
-    
 }
 
 int compare_struct(const void * a, const void * b){
@@ -28,18 +28,25 @@ int compare_struct(const void * a, const void * b){
 }
 
 int main(int argc, const char * argv[]) {
-    int i;
-    test_struct array[NUM];
+    int i, cur, prev;
+    
+    int array[NUM];
     
     srand((unsigned)time(NULL));
-    for(i=0;i<NUM;i++)    array[i].start = rand()%100;
+    for(i=0;i<NUM;i++)    array[i] = rand()%NUM;
     for(i=0; i <NUM; i++){
-        printf("%d ", array[i].start);
-        if(i == NUM -1) printf("\n");
+        printf("%d ", array[i] );
+        if(i == NUM -1) printf("\n\n");
     }
-    test_qsort(array, NUM, sizeof(test_struct), compare_struct);
+    
+    test_qsort(array, NUM, sizeof(int), compare_int);
+    
+    cur = prev = array[0];
     for(i=0; i <NUM; i++){
-        printf("%d ", array[i].start);
+        prev = cur;
+        cur = array[i];
+        assert(prev <= cur);
+        printf("%d ", array[i]);
         if(i == NUM -1) printf("\n");
     }
     
