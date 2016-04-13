@@ -3,7 +3,7 @@
 #include <time.h>
 #include "quick_sort.h"
 
-#define NUM (1000000)
+#define NUM (1000)
 
 typedef struct test_struct{
     int end;
@@ -29,19 +29,17 @@ int compare_struct(const void * a, const void * b){
 
 int main(int argc, const char * argv[]) {
     int i;
-    
-    int array[NUM];
+    test_struct array[NUM];
     
     srand((unsigned)time(NULL));
-    for(i=0;i<NUM;i++)    array[i] = rand()%NUM;
+    for(i=0;i<NUM;i++)    array[i].start = rand()%100;
     for(i=0; i <NUM; i++){
-        printf("%d ", array[i] );
-        if(i == NUM -1) printf("\n\n");
+        printf("%d ", array[i].start);
+        if(i == NUM -1) printf("\n");
     }
-    test_qsort(array, NUM, sizeof(int), compare_int);
-    //quick(&array, 0, NUM - 1);
+    test_qsort(array, NUM, sizeof(test_struct), compare_struct);
     for(i=0; i <NUM; i++){
-        printf("%d ", array[i]);
+        printf("%d ", array[i].start);
         if(i == NUM -1) printf("\n");
     }
     

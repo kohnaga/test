@@ -9,8 +9,4 @@ void test_qsort(
            size_t data_size,
            int( * func )( const void * , const void *)
            );
-
-void quick(int a[], int left, int right);
-
-
 #endif /* quick_sort_h */
