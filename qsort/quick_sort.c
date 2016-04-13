@@ -3,7 +3,7 @@
 
 #define STACKSIZE (100)
 #define DATA_SIZE (1024)
-#define THRESHOLD (1)
+#define THRESHOLD (10)
 
 static void my_memswap
 (
